@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 // Replace this with your actual close-up headlight asset path
 import headlightBg from '../assets/book.png'; 
 
 function BookGT() {
+  const [isHovered, setIsHovered] = useState(false);
+
   // --- Layout Canvas Styles ---
   const containerStyle = {
     position: 'relative',
@@ -44,30 +46,31 @@ function BookGT() {
     fontSize: '48px',
     fontWeight: '700',
     letterSpacing: '2px',
-    userSelect: 'none'
+    userSelect: 'none',
+    transition: 'color 0.3s ease'
+  };
+
+  const arrowStyle = {
+    display: 'inline-block',
+    transition: 'transform 0.3s ease',
+    transform: isHovered ? 'translateX(15px)' : 'translateX(0px)'
   };
 
   return (
     <div style={containerStyle}>
-      <style>
-        {`
-          /* Targets the arrow span specifically when the parent Link is hovered */
-          .arrow-trigger {
-            transition: transform 0.3s ease, color 0.3s ease;
-            display: inline-block;
-          }
-          .nav-link:hover .arrow-trigger {
-            transform: translateX(15px);
-            color: #00ff66; /* Subtle green highlight on hover */
-          }
-        `}
-      </style>
-
       <div style={overlayStyle} />
 
-      <Link to="/contact" className="nav-link" style={linkStyle}>
+      <Link 
+        to="/contact" 
+        style={{
+          ...linkStyle,
+          color: isHovered ? '#00ff66' : '#ffffff'
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <span>Book Your GT</span>
-        <span className="arrow-trigger">&rarr;</span>
+        <span style={arrowStyle}>&rarr;</span>
       </Link>
     </div>
   );
